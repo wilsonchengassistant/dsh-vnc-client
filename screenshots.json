@@ -1,0 +1,12 @@
+[
+	{
+		"title": "Connected to a VNC server",
+		"path": "docs/screenshot-connected.png",
+		"description": "The Remote desktop tab in the right sidebar, connected to a server, showing the live framebuffer with the connection state and geometry in the footer."
+	},
+	{
+		"title": "Saved servers in the plugin's settings",
+		"path": "docs/screenshot-settings.png",
+		"description": "Settings → Plugins → dsh-vnc-client, with the saved-server list, the add/edit form, and the plugin's component running."
+	}
+]

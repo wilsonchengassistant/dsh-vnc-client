@@ -1,0 +1,111 @@
+/**
+ * Dictionaries for this plugin.
+ *
+ * Chinese is the key-set source of truth, as everywhere else in the harness:
+ * English is checked complete against it, so a new key cannot ship with only
+ * one language.
+ */
+
+/** Dictionary namespace owned by this plugin. */
+export const NS = "vncClient";
+
+/** Simplified Chinese dictionary. */
+export const zh = {
+	"tab.label": "远程桌面",
+	"guide.title": "远程桌面",
+	"guide.description": "连接任意 VNC 服务器，并通过右侧面板操作远端桌面。",
+	"bar.connect": "连接",
+	"bar.disconnect": "断开",
+	"bar.reconnect": "重新连接",
+	"bar.fullscreen": "全屏",
+	"bar.exitFullscreen": "退出全屏",
+	"bar.fit": "适应窗口",
+	"bar.actualSize": "原始大小",
+	"bar.clipboard": "剪贴板",
+	"bar.target": "服务器",
+	"bar.noTargets": "尚未保存服务器",
+	"bar.manage": "管理服务器…",
+	"state.connecting": "正在连接…",
+	"state.connected": "已连接",
+	"state.disconnected": "已断开",
+	"state.closed": "连接已关闭",
+	"state.noTarget": "请先选择一台服务器",
+	"state.hint": "点击画面后可使用键盘和鼠标",
+	"state.notReady": "画面尚未就绪",
+	"error.generic": "连接失败",
+	"settings.title": "VNC 远程桌面",
+	"settings.intro": "保存要连接的 VNC 服务器，并在此插件的页面上切换。",
+	"settings.list.title": "已保存的服务器",
+	"settings.list.empty": "还没有服务器。添加一台即可开始。",
+	"settings.field.name": "名称",
+	"settings.field.host": "主机",
+	"settings.field.port": "端口",
+	"settings.field.password": "密码",
+	"settings.field.password.hint": "留空表示不修改已保存的密码。",
+	"settings.password.set": "已保存",
+	"settings.password.unset": "未设置",
+	"settings.add": "添加服务器",
+	"settings.save": "保存",
+	"settings.cancel": "取消",
+	"settings.remove": "删除",
+	"settings.editing": "编辑",
+	"settings.adding": "添加",
+	"settings.probe": "测试连接",
+	"settings.probing": "正在测试…",
+	"settings.probe.ok": "服务器响应：{banner}",
+	"settings.probe.failed": "无法连接",
+	"settings.saved": "已保存",
+	"settings.removed": "已删除",
+	"settings.privacy": "密码保存在 Harness 主目录下的 vnc-client/targets.json（仅当前用户可读），因为 RFB 认证无法使用可存储的挑战应答方案。"
+};
+
+/** English dictionary. */
+export const en = {
+	"tab.label": "Remote desktop",
+	"guide.title": "Remote desktop",
+	"guide.description": "Connect to any VNC server and drive its desktop from the right sidebar.",
+	"bar.connect": "Connect",
+	"bar.disconnect": "Disconnect",
+	"bar.reconnect": "Reconnect",
+	"bar.fullscreen": "Full screen",
+	"bar.exitFullscreen": "Exit full screen",
+	"bar.fit": "Fit to panel",
+	"bar.actualSize": "Actual size",
+	"bar.clipboard": "Clipboard",
+	"bar.target": "Server",
+	"bar.noTargets": "No servers saved yet",
+	"bar.manage": "Manage servers…",
+	"state.connecting": "Connecting…",
+	"state.connected": "Connected",
+	"state.disconnected": "Disconnected",
+	"state.closed": "The connection closed",
+	"state.noTarget": "Choose a server to connect to",
+	"state.hint": "Click the screen to send keyboard and mouse",
+	"state.notReady": "the screen is not ready yet",
+	"error.generic": "Could not connect",
+	"settings.title": "VNC remote desktop",
+	"settings.intro": "Save the VNC servers you connect to and switch between them on this plugin's page.",
+	"settings.list.title": "Saved servers",
+	"settings.list.empty": "No servers yet. Add one to get started.",
+	"settings.field.name": "Name",
+	"settings.field.host": "Host",
+	"settings.field.port": "Port",
+	"settings.field.password": "Password",
+	"settings.field.password.hint": "Leave blank to keep the saved password.",
+	"settings.password.set": "Saved",
+	"settings.password.unset": "Not set",
+	"settings.add": "Add server",
+	"settings.save": "Save",
+	"settings.cancel": "Cancel",
+	"settings.remove": "Delete",
+	"settings.editing": "Editing",
+	"settings.adding": "Adding",
+	"settings.probe": "Test connection",
+	"settings.probing": "Testing…",
+	"settings.probe.ok": "Server replied: {banner}",
+	"settings.probe.failed": "Could not connect",
+	"settings.saved": "Saved",
+	"settings.removed": "Deleted",
+	"settings.privacy":
+		"Passwords are stored in vnc-client/targets.json under the Harness home, readable only by your user account, because RFB authentication cannot use a stored challenge-and-response scheme."
+};
