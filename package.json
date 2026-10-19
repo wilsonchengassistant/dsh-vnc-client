@@ -1,6 +1,6 @@
 {
   "name": "dsh-vnc-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "VNC client tab for the DeepSeek Harness right sidebar: an RFB client that connects to any VNC/RFB server over a WebSocket-to-TCP bridge running in the Host",
   "license": "MIT",
   "type": "module",
