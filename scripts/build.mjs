@@ -158,18 +158,27 @@ export function rejectBadJsxCalls(source) {
 		if (topLevelCommas.length >= 1) {
 			const firstComma = topLevelCommas[0];
 			const props = source.slice(firstComma + 1, topLevelCommas[1] ?? cursor).trim();
-			// One top-level comma is the type/props separator; a second means the
-			// call has an argument React has no slot for.
-			const tooMany = topLevelCommas.length >= 2;
-			if (props === "null" || tooMany) {
+			// The third argument is React's key slot, so a simple expression
+			// there is legitimate. What never renders is an element or a list in
+			// that slot — it becomes the key and is dropped — or any argument
+			// past the third, which React has nowhere to put.
+			const third = topLevelCommas[1]
+				? source.slice(topLevelCommas[1] + 1, topLevelCommas[2] ?? cursor).trim()
+				: "";
+			const looksLikeElement = /^\(0,\s*react_jsx_runtime\.jsx\)|^\[|^\{|^"/.test(third);
+			if (props === "null" || topLevelCommas.length >= 3 || (third !== "" && looksLikeElement)) {
 				offenders.push(
-					tooMany
+					topLevelCommas.length >= 3 || (third !== "" && looksLikeElement)
 						? source.slice(index, cursor + 1).replace(/\s+/g, " ").slice(0, 70)
 						: `${props} as props`
 				);
 			}
 		}
-		index = cursor === -1 ? index + 1 : cursor;
+		// Step past this occurrence only. Skipping to the closing paren would
+		// step over every jsx call nested inside this one, and nesting is how
+		// all the form and list markup is written — so the guard would pass a
+		// file whose nested calls all drop their children.
+		index += 1;
 	}
 	if (offenders.length === 0) return;
 	throw new Error(

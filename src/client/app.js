@@ -490,11 +490,10 @@ var module = { exports: {} };
 										setSelected(event.target.value);
 									},
 									children: targets.map(function (entry) {
-										return (0, react_jsx_runtime.jsx)(
-											"option",
-											{ key: entry.id, value: entry.id, children: entry.name },
-											entry.id
-										);
+										return (0, react_jsx_runtime.jsx)("option", {
+											value: entry.id,
+											children: entry.name
+										}, entry.id);
 									})
 								}),
 						live
@@ -902,52 +901,53 @@ var module = { exports: {} };
 								})
 							: null,
 						targets.map(function (entry) {
-							return (0, react_jsx_runtime.jsx)(
-								"div",
-								{ key: entry.id, style: settingsCss.row },
-								(0, react_jsx_runtime.jsx)("span", { style: settingsCss.name, children: entry.name }),
-								(0, react_jsx_runtime.jsx)("span", {
-									style: settingsCss.address,
-									children: entry.host + ":" + entry.port
-								}),
-								(0, react_jsx_runtime.jsx)("span", {
-									style: settingsCss.badge,
-									children: entry.hasPassword ? t("settings.password.set") : t("settings.password.unset")
-								}),
-								(0, react_jsx_runtime.jsx)("div", { style: settingsCss.spacer }),
-								(0, react_jsx_runtime.jsx)(primitives.Button, {
-									size: "sm",
-									variant: "ghost",
-									disabled: busy,
-									onClick: function () {
-										void test(entry.id);
-									},
-									children: t("settings.probe")
-								}),
-								(0, react_jsx_runtime.jsx)(primitives.Button, {
-									size: "sm",
-									variant: "ghost",
-									onClick: function () {
-										setDraft({
-											id: entry.id,
-											name: entry.name,
-											host: entry.host,
-											port: String(entry.port),
-											password: ""
-										});
-									},
-									children: t("settings.editing")
-								}),
-								(0, react_jsx_runtime.jsx)(primitives.Button, {
-									size: "sm",
-									variant: "ghost",
-									disabled: busy,
-									onClick: function () {
-										void remove(entry.id);
-									},
-									children: t("settings.remove")
-								})
-							);
+							return (0, react_jsx_runtime.jsx)("div", {
+								style: settingsCss.row,
+								children: [
+									(0, react_jsx_runtime.jsx)("span", { style: settingsCss.name, children: entry.name }),
+									(0, react_jsx_runtime.jsx)("span", {
+										style: settingsCss.address,
+										children: entry.host + ":" + entry.port
+									}),
+									(0, react_jsx_runtime.jsx)("span", {
+										style: settingsCss.badge,
+										children: entry.hasPassword ? t("settings.password.set") : t("settings.password.unset")
+									}),
+									(0, react_jsx_runtime.jsx)("div", { style: settingsCss.spacer }),
+									(0, react_jsx_runtime.jsx)(primitives.Button, {
+										size: "sm",
+										variant: "ghost",
+										disabled: busy,
+										onClick: function () {
+											void test(entry.id);
+										},
+										children: t("settings.probe")
+									}),
+									(0, react_jsx_runtime.jsx)(primitives.Button, {
+										size: "sm",
+										variant: "ghost",
+										onClick: function () {
+											setDraft({
+												id: entry.id,
+												name: entry.name,
+												host: entry.host,
+												port: String(entry.port),
+												password: ""
+											});
+										},
+										children: t("settings.editing")
+									}),
+									(0, react_jsx_runtime.jsx)(primitives.Button, {
+										size: "sm",
+										variant: "ghost",
+										disabled: busy,
+										onClick: function () {
+											void remove(entry.id);
+										},
+										children: t("settings.remove")
+									})
+								]
+							}, entry.id);
 						}),
 						probe === null ? null : (0, react_jsx_runtime.jsx)("div", { style: settingsCss.status, children: probe })
 					]
@@ -959,9 +959,8 @@ var module = { exports: {} };
 							style: settingsCss.heading,
 							children: draft.id === "" ? t("settings.adding") : t("settings.editing")
 						}),
-						(0, react_jsx_runtime.jsx)(
-							"form",
-							{ style: settingsCss.form, onSubmit: submit },
+						(0, react_jsx_runtime.jsx)("form", { style: settingsCss.form, onSubmit: submit,
+							children: [
 							(0, react_jsx_runtime.jsx)("div", {
 								style: settingsCss.field,
 								children: [
@@ -1063,7 +1062,8 @@ var module = { exports: {} };
 											})
 								]
 							})
-						)
+						]
+						})
 					]
 				}),
 				(0, react_jsx_runtime.jsx)("p", { style: settingsCss.note, children: t("settings.privacy") }),
