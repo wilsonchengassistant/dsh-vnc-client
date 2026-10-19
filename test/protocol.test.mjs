@@ -285,3 +285,40 @@ test("paints the first update, and keeps asking for frames", async () => {
 		server.close();
 	}
 });
+
+test("a click reports the button down, then up, at the same spot", async () => {
+	// The mask is the whole of a click as far as the server is concerned: a
+	// press that goes out with no bits looks identical to a mouse move, and the
+	// remote desktop never sees a click at all.
+	const server = await startFakeServer({ port: 0 });
+	try {
+		const transport = await connectToServer({ port: server.port });
+		const { client } = makeClient(transport);
+		client.connect("");
+		await waitFor(() => client.phase === "ready", "the handshake");
+
+		client.movePointer(20, 10, RfbClient.buttonMask(0));
+		client.movePointer(20, 10, 0);
+		client.movePointer(40, 30, RfbClient.buttonMask(2));
+		client.movePointer(40, 30, 0);
+
+		await waitFor(
+			() => server.sessions()[0].events.filter((event) => event.kind === "pointer").length >= 4,
+			"the pointer messages to arrive"
+		);
+		const pointers = server.sessions()[0].events.filter((event) => event.kind === "pointer");
+		assert.deepEqual(
+			pointers.map((event) => [event.x, event.y, event.buttons]),
+			[
+				[20, 10, 1],
+				[20, 10, 0],
+				[40, 30, 2],
+				[40, 30, 0]
+			],
+			"RFB numbers buttons left=1, middle=3, right=2, so the browser button 2 is mask 2"
+		);
+		client.dispose();
+	} finally {
+		server.close();
+	}
+});

@@ -13,6 +13,7 @@
  */
 
 import { createServer } from "node:net";
+import { appendFileSync } from "node:fs";
 import { RFB_VERSION, SECURITY_NONE, SECURITY_VNC_AUTH } from "../src/client/rfb/constants.js";
 import { vncAuthResponse } from "../src/client/rfb/des.js";
 import { encodeHextileSolid, encodeRaw, PersistentDeflate, Writer, encodeZrle, zrleTileSolid } from "./encoders.mjs";
@@ -319,7 +320,21 @@ export function startFakeServer(options = {}) {
 // Standalone mode: serve until interrupted.
 if (process.argv[1]?.endsWith("fake-vnc-server.mjs")) {
 	const port = Number(process.argv[2] ?? 5901);
+	// Optional third argument: append every client message as JSON lines, so a
+	// browser-driven test can assert on the input the client actually sent.
+	// The protocol tests read `session.events` in-process instead; this exists
+	// for the case where the client runs in a page and this server does not.
+	const eventsPath = process.argv[3];
 	startFakeServer({ port }).then((server) => {
+		if (eventsPath) {
+			const timer = setInterval(() => {
+				const lines = server.sessions().flatMap((session) => session.events.map((event) => JSON.stringify(event)));
+				if (lines.length === 0) return;
+				server.sessions().forEach((session) => session.events.splice(0, session.events.length));
+				appendFileSync(eventsPath, `${lines.join("\n")}\n`);
+			}, 200);
+			timer.unref();
+		}
 		process.stdout.write(`fake VNC server listening on 127.0.0.1:${server.port}\n`);
 	});
 }

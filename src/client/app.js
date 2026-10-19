@@ -302,6 +302,23 @@ var module = { exports: {} };
 		var buttonsState = react.useState(0);
 		var buttons = buttonsState[0];
 		var setButtons = buttonsState[1];
+		var heldButtons = react.useRef(0);
+
+		/**
+		 * Record which buttons are down and send that to the server.
+		 *
+		 * The ref is written before the send so a re-render triggered by the
+		 * state update cannot leave the release sending a stale mask.
+		 *
+		 * @param {number} mask - Bitmask of buttons now held.
+		 * @param {object | null} event - The pointer event, for its position.
+		 * @returns {void}
+		 */
+		function pressButtons(mask, event) {
+			heldButtons.current = mask;
+			setButtons(mask);
+			if (event) sendPointer(event, mask);
+		}
 		var scaleState = react.useState(1);
 		var scaleTick = scaleState[0];
 		var setScaleTick = scaleState[1];
@@ -535,6 +552,7 @@ var module = { exports: {} };
 						return sessionRef.current;
 					},
 					setButtons: setButtons,
+					heldButtons: heldButtons,
 					setCursorAt: setCursorAt,
 					toFrame: toFrame,
 					t: t,
@@ -593,6 +611,7 @@ var module = { exports: {} };
 					props.ref.current?.focus?.();
 					var mask = RfbClient.buttonMask(event.button);
 					props.setButtons(mask);
+					props.heldButtons.current = mask;
 					props.sendPointer(event, mask);
 					try {
 						event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -601,14 +620,16 @@ var module = { exports: {} };
 					}
 				},
 				onPointerMove: function (event) {
-					props.sendPointer(event, props.buttons);
+					props.sendPointer(event, props.heldButtons.current);
 					props.setCursorAt(props.toFrame(event));
 				},
 				onPointerUp: function (event) {
+					props.heldButtons.current = 0;
 					props.setButtons(0);
 					props.sendPointer(event, 0);
 				},
 				onPointerLeave: function (event) {
+					props.heldButtons.current = 0;
 					props.setButtons(0);
 					props.sendPointer(event, 0);
 				},
