@@ -46,6 +46,7 @@
     }
   },
   "files": [
+    "CHANGELOG.md",
     "cordis.patch.yml",
     "screenshots.json",
     "docs/*.png",
